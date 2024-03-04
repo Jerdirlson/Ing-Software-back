@@ -1,6 +1,6 @@
 export class Controller{
     static libros : any[] = [];
-    static create = async ([req, res, next] : any   ) => {
+    static create = async ([req, res, next] : any ) => {
         try {
             console.log("Holaa");
             this.libros.push(req.body);
@@ -15,11 +15,13 @@ export class Controller{
         }
     };
 
+    
     static showLibros = ([req, res, next] : any) => {
         try {
-            this.libros.forEach(libro => {
-                console.log(libro);
-            })
+            console.log("HOLAAAA");
+            // this.libros.forEach(libro => {
+            //     console.log(libro);
+            // })
             res.status(201).json({
                 ok: 1,
                 status: 201,
