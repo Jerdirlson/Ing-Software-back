@@ -18,7 +18,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 };
 
-export const singin = async (req : Request, res : Response) => {
+export const signin = async (req : Request, res : Response) => {
     console.log(req.body);
     const email = req.body.email;
     const password = req.body.password;
