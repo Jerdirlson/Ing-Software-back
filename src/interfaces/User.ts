@@ -8,7 +8,9 @@ export interface User {
     pwdUser : string,
     siteUser? : number,
     idRol : number,
-    status : number
+    status : boolean,
+    idHistoryClient: number,
+    eps: number
 }
 
 export interface UserUpdate{
