@@ -4,6 +4,7 @@ import connection from "../providers/database";
 import { Adress } from "../interfaces/Adress";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { Roles } from "interfaces/Roles";
 
 export async function createUser(user: User, address : Adress) {
     try {
@@ -105,6 +106,21 @@ export async function getUserById(id : number): Promise<User | null>{
         }
     } catch (error) {
         console.error("Error retrieving user:", error);
+        throw error;
+    }
+}
+
+export async function getUserPermitions(idRole : number): Promise<Roles | null>{
+    try {      
+        const query = 'SELECT * FROM Role WHERE idRole = ?';
+        const [roleRows] : any = await connection.query(query, [idRole] );
+        if(roleRows > 0){
+            return roleRows[0] as Roles;
+        }else{
+            return null;
+        }
+    } catch (error) {
+        console.error("Error retrieving role user:", error);
         throw error;
     }
 }

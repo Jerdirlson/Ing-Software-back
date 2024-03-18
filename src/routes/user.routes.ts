@@ -1,8 +1,7 @@
-import { Express } from "express";
+import { Router } from "express";
+import { getRoles } from "../controllers/user.controller";
 import express from 'express';
-import connection from "../providers/database";
-
-const router = express.Router();
+const router : Router = Router();
 
 router.get('/', async (req, res) => {
     res.send('Fetching...')
@@ -11,5 +10,8 @@ router.get('/', async (req, res) => {
 router.get('/getUser', (req, res) => {
     res.send('Fetching...1 ')
 })
+
+router.get('/getRoles', getRoles)
+
 
 export default router;
