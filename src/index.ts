@@ -12,8 +12,15 @@ import authRouter from './routes/auth.routes';
 const app = express();
 const port = 3000;
 
-// SETTINGS
-app.use(cors());
+// SETTINGS 
+/**
+ * origin : define el origen de donde esta permitido recibir peticiones (FRONT)
+ * credentials : permite tener credenciales en las cookies
+ */
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 
 // MIDDLEWARES
 app.use(morgan('dev'));
