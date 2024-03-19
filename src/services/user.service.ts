@@ -5,6 +5,8 @@ import { Adress } from "../interfaces/Adress";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { Roles } from "interfaces/Roles";
+import { RolModule } from "interfaces/RolModule";
+import { Module } from "interfaces/Module";
 
 export async function createUser(user: User, address : Adress) {
     try {
@@ -114,7 +116,7 @@ export async function getUserPermitions(idRole : number): Promise<Roles | null>{
     try {      
         const query = 'SELECT * FROM Role WHERE idRole = ?';
         const [roleRows] : any = await connection.query(query, [idRole] );
-        if(roleRows > 0){
+        if(roleRows.length > 0){
             return roleRows[0] as Roles;
         }else{
             return null;
@@ -123,4 +125,36 @@ export async function getUserPermitions(idRole : number): Promise<Roles | null>{
         console.error("Error retrieving role user:", error);
         throw error;
     }
+}
+
+export async function getUserRolModule(idRole : number): Promise<RolModule[] | null>{
+    try {      
+        const query = 'SELECT * FROM RolModule WHERE idRol = ?';
+        const [roleRows] : any = await connection.query(query, [idRole] );
+        if(roleRows.length > 0){
+            return roleRows as RolModule[];
+        }else{
+            return null;
+        }
+    } catch (error) {
+        console.error("Error retrieving rolModule user:", error);
+        throw error;
+    }
+}
+
+export async function getUserLinks(RolModule : RolModule[]): Promise<Module[] | null>{
+    try {
+        const arryRolModule: Module[] = [];
+        for (let index = 0; index < RolModule.length; index++) {
+            const query = 'SELECT * FROM Module WHERE idModule = ?';
+            const [roleRows]: any = await connection.query(query, [RolModule[index].idModule]);
+            if (roleRows.length > 0) {
+                arryRolModule.push(roleRows[0] as Module); 
+            }
+        }
+        return arryRolModule;
+    } catch (error) {
+        console.error("Error retrieving Module user:", error);
+        throw error;
+    }        
 }
