@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { getRoles } from "../controllers/user.controller";
+import { Express } from "express";
+import express from 'express';
+import connection from "../providers/database";
 
-
-const router : Router = Router();
+const router = express.Router();
 
 router.get('/', async (req, res) => {
     res.send('Fetching...')
@@ -11,7 +11,5 @@ router.get('/', async (req, res) => {
 router.get('/getUser', (req, res) => {
     res.send('Fetching...1 ')
 })
-
-router.get('/getRoles', getRoles)
 
 export default router;
