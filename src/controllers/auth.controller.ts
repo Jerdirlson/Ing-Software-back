@@ -18,7 +18,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 };
 
-export const singin = async (req : Request, res : Response) => {
+export const signin = async (req : Request, res : Response) => {
     console.log(req.body);
     const email = req.body.email;
     const password = req.body.password;
@@ -37,6 +37,7 @@ export const singin = async (req : Request, res : Response) => {
     const token : string = jwt.sign({_id : response.idUser}, process.env.TOKEN_SECRET || ' ', {
         expiresIn: 60 * 60  //una hora
     })
+    res.cookie("token", token)
     res.status(200).header('auth-token', token).json(response)
 };
 
