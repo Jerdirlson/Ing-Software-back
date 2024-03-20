@@ -53,7 +53,7 @@ export const signin = async (req : Request, res : Response) => {
     const token : string = jwt.sign({_id : response.idUser}, process.env.TOKEN_SECRET || ' ', {
         expiresIn: 60 * 60  //una hora
     })
-    res.status(200).header('auth-token', token).json({response ,responseRol, responseModule})
+    res.status(200).header('auth-token', token).json({response , responseModule})
 };
 
 export const profile = async (req : Request, res : Response) => {

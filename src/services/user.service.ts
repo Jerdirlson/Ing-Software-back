@@ -8,6 +8,13 @@ import { Roles } from "interfaces/Roles";
 import { RolModule } from "interfaces/RolModule";
 import { Module } from "interfaces/Module";
 
+/**
+ * Metodo para la creacion de usuarios 
+ * @param user 
+ * @param address 
+ * @returns 
+ */
+
 export async function createUser(user: User, address : Adress) {
     try {
         //Insertando primero la dirección por las llaves foraneas
@@ -40,6 +47,12 @@ export async function createUser(user: User, address : Adress) {
 };
 
 
+/**
+ * Metodo para actualizar la informacion del usuario
+ * @param user 
+ * @param userId 
+ * @returns 
+ */
 export async function updateUser(user: UserUpdate , userId : number){
     try {
         const updatedUserData: UserUpdate = {
@@ -82,6 +95,11 @@ export async function validatePassword(password: string, hashedPassword : string
     return await bcrypt.compare(password, hashedPassword)
 }
 
+/**
+ * Metodo selct para obtener el usuario por email
+ * @param email 
+ * @returns 
+ */
 export async function getUserByEmail(email : string): Promise<User | null>{
     try {
         const query = 'SELECT * FROM User WHERE emailUser = ?';
@@ -96,6 +114,11 @@ export async function getUserByEmail(email : string): Promise<User | null>{
         throw error;
     }
 }
+/**
+ * Metodo select para obtener el usuario por el idUser
+ * @param id
+ * @returns 
+ */
 
 export async function getUserById(id : number): Promise<User | null>{
     try {
@@ -112,6 +135,12 @@ export async function getUserById(id : number): Promise<User | null>{
     }
 }
 
+/**
+ * Metodo select para obtener de la tabla role (el rol el cual el usuario tiene)
+ * @param idRole 
+ * @returns 
+ */
+
 export async function getUserPermitions(idRole : number): Promise<Roles | null>{
     try {      
         const query = 'SELECT * FROM Role WHERE idRole = ?';
@@ -127,6 +156,13 @@ export async function getUserPermitions(idRole : number): Promise<Roles | null>{
     }
 }
 
+/**
+ * Metodo select para obtener de la tabla RolModule el id del modulo, 
+ *  mediante el idRol 
+ * @param idRole 
+ * @returns 
+ */
+
 export async function getUserRolModule(idRole : number): Promise<RolModule[] | null>{
     try {      
         const query = 'SELECT * FROM RolModule WHERE idRol = ?';
@@ -141,6 +177,12 @@ export async function getUserRolModule(idRole : number): Promise<RolModule[] | n
         throw error;
     }
 }
+
+/**
+ * Metodo select para obtener de la tabla module
+ * @param RolModule 
+ * @returns 
+ */
 
 export async function getUserLinks(RolModule : RolModule[]): Promise<Module[] | null>{
     try {
