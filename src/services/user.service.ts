@@ -92,7 +92,12 @@ export async function encryptPassword(password: string): Promise<string> {
  * @returns 
  */
 export async function validatePassword(password: string, hashedPassword : string): Promise<boolean> {
-    return await bcrypt.compare(password, hashedPassword)
+    try {
+        return await bcrypt.compare(password, hashedPassword);
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
 }
 
 /**
@@ -111,7 +116,7 @@ export async function getUserByEmail(email : string): Promise<User | null>{
         }
     } catch (error) {
         console.error("Error retrieving user:", error);
-        throw error;
+        return null;
     }
 }
 /**

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-import { updateUser , createUser, getUserByEmail, validatePassword, getUserById, getUserRolModule, getUserLinks} from '../services/user.service';
+import { createUser, getUserByEmail, validatePassword, getUserById, getUserRolModule, getUserLinks} from '../services/user.service';
 import jwt from 'jsonwebtoken';
-import { TokenValidator } from "../libs/validateToken";
 import { User } from "interfaces/User";
 
 export const signup = async (req: Request, res: Response) => {
@@ -24,7 +23,7 @@ export const signin = async (req : Request, res : Response) => {
     const password = req.body.password;
     const response : any = await getUserByEmail(email);
 
-    console.log(response);
+    console.log("Response signin ",response);
 
     if(!response){
         res.status(404).json({success: false, message:'El usuario no existe.'});
@@ -32,10 +31,9 @@ export const signin = async (req : Request, res : Response) => {
 
     const correctPassword : boolean = await validatePassword(password, response?.pwdUser|| '')
 
-    if(!correctPassword){
-        res.status(404).json({success: false, message:'La contraseña no es correcta.'});
-    }
-    
+    if(!correctPassword)
+        return res.status(404).json({ error : null , mensaje : 'La contraseña no es correcta.'});
+
     const responseRol :any = await getUserRolModule(response.idRol);
     console.log(responseRol);
 
@@ -49,12 +47,18 @@ export const signin = async (req : Request, res : Response) => {
     if(!responseModule){
         res.status(404).json({success: false, message:'El modulo no tiene link'});
     }
-
-    const token : string = jwt.sign({_id : response.idUser}, process.env.TOKEN_SECRET || ' ', {
-        expiresIn: 60 * 60  //una hora
-    })
-    res.cookie("token", token)
-    res.status(200).header('auth-token', token).json({response, responseModule });
+    
+    try {
+        const token = jwt.sign({_id : response.idUser}, process.env.TOKEN_SECRET || ' ', {
+            expiresIn: 60 * 60  //una hora
+        })
+        res.cookie("token", token)
+        return res.status(200).header('auth-token', token).json(response);
+        
+    } catch (error) {
+        console.error("Error en generar el token. ", error);
+        return res.status(404).json({ error: error , mensaje : 'Hubo un error en la generación del token.'});
+    }
 };
 
 export const profile = async (req : Request, res : Response) => {
