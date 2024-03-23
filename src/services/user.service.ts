@@ -7,6 +7,11 @@ import bcrypt from 'bcryptjs';
 import { Roles } from "interfaces/Roles";
 import { RolModule } from "interfaces/RolModule";
 import { Module } from "interfaces/Module";
+import { phoneUser } from "interfaces/phoneUser";
+import {Medic} from "interfaces/Medic";
+import {Services} from "interfaces/Services";
+import { Site } from "interfaces/Site";
+import { MedicSite } from "interfaces/MedicSite";
 
 /**
  * Metodo para la creacion de usuarios 
@@ -204,3 +209,80 @@ export async function getUserLinks(RolModule : RolModule[]): Promise<Module[] | 
         throw error;
     }        
 }
+
+export async function addPhoneUser(phone : phoneUser){
+    try {
+        const query = 'INSERT INTO phoneUser SET';
+        const res : any = await connection.query(query, phone);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'User phone created problem.', token: token, phneUser :  phone};
+        }
+        return { success: true, message: 'User phone created successfully.', token: token, phneUser :  phone};
+    } catch (error) {
+        console.error("Creating phone user:", error);
+        throw error;
+    }        
+}
+
+export async function addService(service : Services){
+    try {
+        const query = 'INSERT INTO Services SET';
+        const res : any = await connection.query(query, service);
+        const token = jwt.sign({_id : res[0].nameService}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'Service created problem.', token: token, service :  service};
+        }
+        return { success: true, message: 'Service created succesfully.', token: token, service :  service};
+    } catch (error) {
+        console.error("Creating service:", error);
+        throw error;
+    }        
+}
+
+export async function addMedic(medic : Medic){
+    try {
+        const query = 'INSERT INTO Medic SET ';
+        const res : any = await connection.query(query, medic);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'User phone created problem.', token: token, medicU :  medic};
+        }
+        return { success: true, message: 'Medic created successfully.', token: token, medicU :  medic};
+    } catch (error) {
+        console.error("Creating medic:", error);
+        throw error;
+    }        
+}
+
+export async function addSite(site : Site){
+    try {
+        const query = 'INSERT INTO Site SET ';
+        const res : any = await connection.query(query, site);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'Site created problem.', token: token, site :  site};
+        }
+        return { success: true, message: 'Site created successfully.', token: token, site :  site};
+    } catch (error) {
+        console.error("Creating Site:", error);
+        throw error;
+    }        
+}
+
+export async function addMedicSite(medicSite : MedicSite){
+    try {
+        const query = 'INSERT INTO MedicSite SET ';
+        const res : any = await connection.query(query, medicSite);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'MedicSite created problem.', token: token, meidicSit :  medicSite};
+        }
+        return { success: true, message: 'MedicSite created successfully.', token: token, medicSite :  medicSite};
+    } catch (error) {
+        console.error("Creating MedicSite:", error);
+        throw error;
+    }        
+}
+
+
