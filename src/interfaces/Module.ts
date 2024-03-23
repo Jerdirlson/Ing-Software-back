@@ -1,7 +1,7 @@
 export interface Module {
-    idModule?: number,
+    id?: number,
     nameModule : string,
     type?: string,
     link: string,
-    status: boolean
+    statusModule: boolean
 }

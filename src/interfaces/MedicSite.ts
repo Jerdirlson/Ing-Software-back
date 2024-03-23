@@ -1,5 +1,5 @@
 export interface MedicSIte {
-    idMedicSite?: number,
+    id?: number,
     idMedic : number,
     idSite : number
 }

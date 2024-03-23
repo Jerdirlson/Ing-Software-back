@@ -3,6 +3,8 @@ import { updateUser , createUser, getUserByEmail, validatePassword, getUserById,
 import jwt from 'jsonwebtoken';
 import { TokenValidator } from "../libs/validateToken";
 import { User } from "interfaces/User";
+import { RolModule } from "interfaces/RolModule";
+import { Module } from "interfaces/Module";
 
 export const signup = async (req: Request, res: Response) => {
     console.log();
@@ -58,8 +60,15 @@ export const signin = async (req : Request, res : Response) => {
 };
 
 export const profile = async (req : Request, res : Response) => {
-    const user: User | null = await getUserById(req.userId)
+    const user: User | null = await getUserById(req.userId);
 
     if (!user) return res.status(404).json('No se encontro al usuario.')
-    res.status(200).json(user)
+    
+    const rol :RolModule[] | null = await getUserRolModule(user.idRol);
+    if (!rol) return res.status(404).json('No se encontro el rol del usuario.')
+
+    const module :Module[] | null = await getUserLinks(rol); 
+    if (!module) return res.status(404).json('No se encontro el rol del usuario.')
+
+    res.status(200).json({user, module})
 };

@@ -1,5 +1,5 @@
 export interface RolModule {
-    idModuleRol?: number,
+    id?: number,
     idModule : number,
     idRol: number
     }

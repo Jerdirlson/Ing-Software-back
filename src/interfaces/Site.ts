@@ -1,4 +1,4 @@
 export interface Site {
-    idSite?: number,
+    id?: number,
     nameSite : string
     }

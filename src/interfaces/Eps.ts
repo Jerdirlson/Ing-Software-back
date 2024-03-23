@@ -1,4 +1,4 @@
 export interface Eps {
-    idEPS?: number,
+    id?: number,
     nameEps : string
 }

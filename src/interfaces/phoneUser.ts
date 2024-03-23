@@ -1,5 +1,5 @@
 export interface phoneUser {
-    idPhoneUSer?: number,
+    id?: number,
     idUser : number,
     telf: string,
     fijo: string

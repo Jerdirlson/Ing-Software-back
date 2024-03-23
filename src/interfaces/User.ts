@@ -1,5 +1,5 @@
 export interface User {
-    idUser?: number;
+    id?: number;
     numId? : string,
     nameUser : string,
     lastNameUser : string,
@@ -8,7 +8,7 @@ export interface User {
     pwdUser : string,
     siteUser? : number,
     idRol : number,
-    status : boolean,
+    statusUser : boolean,
     idHistoryClient: number,
     eps: number
 }
@@ -21,5 +21,5 @@ export interface UserUpdate{
     pwdUser : string,
     siteUser? : number,
     idRol : number,
-    status : number
+    statusUser : boolean
 }

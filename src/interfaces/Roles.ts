@@ -1,4 +1,6 @@
 export interface Roles {
-    idRole? : number;
+    id? : number;
     nameRole? : string;
+    description?: string;
+    statusRole?: boolean;
 }

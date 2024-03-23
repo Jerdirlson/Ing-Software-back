@@ -1,5 +1,5 @@
 export interface HistoryClient {
-    idHistoryClient?: number,
+    id?: number,
     bloodType : string,
     alergies : string,
     patologies: string,

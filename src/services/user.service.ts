@@ -32,13 +32,17 @@ export async function createUser(user: User, address : Adress) {
             emailUser: user.emailUser,
             pwdUser: hashedPassword,
             idRol: user.idRol,
-            status: user.status
+            statusUser: user.statusUser
         };
         console.log("Inserted id Adress ", addressId);
         const query = 'INSERT INTO User SET ?';
         const result : any = await connection.query(query, userData);
-        console.log('User created successfully.', result);
         const token = jwt.sign({_id : result[0].insertId}, process.env.TOKEN_SECRET || '')
+        if(!result){
+            return { success: false, message: 'User created successfully.', token: token, userCreate : userData };
+        }
+        console.log('User created successfully.', result);
+        
         return { success: true, message: 'User created successfully.', token: token, userCreate : userData };
     } catch (error) {
         console.error('Error creating user:', error);
@@ -62,7 +66,7 @@ export async function updateUser(user: UserUpdate , userId : number){
             emailUser: user.emailUser,
             pwdUser: user.pwdUser,
             idRol: user.idRol,
-            status: user.status
+            statusUser: user.statusUser
         };
         const query = "UPDATE users SET ? WHERE id = ?";
         const result = await connection.query(query, [updatedUserData, userId]);

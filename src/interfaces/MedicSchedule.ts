@@ -1,7 +1,7 @@
 export interface MedicSchedule {
-    idMedicSchedule?: number,
+    id?: number,
     idMedic : number,
     idSchedule : number,
-    status: boolean,
+    statusMedicSchedule: boolean,
     idSite: number
 }
