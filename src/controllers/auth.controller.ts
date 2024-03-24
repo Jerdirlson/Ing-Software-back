@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { updateUser , createUser, getUserByEmail, validatePassword, getUserById, getUserRolModule, getUserLinks} from '../services/user.service';
+import { updateUser , createUser, getUserByEmail, validatePassword, getUserById, getUserRolModule, getUserLinks, addPhoneUser} from '../services/user.service';
 import jwt from 'jsonwebtoken';
 import { TokenValidator } from "../libs/validateToken";
 import { User } from "interfaces/User";
@@ -10,8 +10,9 @@ export const signup = async (req: Request, res: Response) => {
     console.log();
     const user = req.body.user;
     const adress = req.body.address;
+    const phone = req.body.phone;
     try {
-        const response = await createUser(user, adress);
+        const response = await createUser(user, adress, phone);
         console.log("Response de singup", response);
         res.status(200).header('auth-token', response.token).json({ success: true, message: 'User updated successfully.', userCreate : response.userCreate});
     } catch (error) {
@@ -24,7 +25,9 @@ export const signin = async (req : Request, res : Response) => {
     console.log(req.body);
     const email = req.body.email;
     const password = req.body.password;
+    const phone = req.body.phoneUser;
     const response : any = await getUserByEmail(email);
+    
 
     console.log(response);
 
@@ -72,3 +75,4 @@ export const profile = async (req : Request, res : Response) => {
 
     res.status(200).json({user, module})
 };
+

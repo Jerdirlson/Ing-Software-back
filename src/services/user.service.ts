@@ -12,6 +12,9 @@ import {Medic} from "interfaces/Medic";
 import {Services} from "interfaces/Services";
 import { Site } from "interfaces/Site";
 import { MedicSite } from "interfaces/MedicSite";
+import { Schedule } from "interfaces/Schedule";
+import { MedicSchedule } from "interfaces/MedicSchedule";
+import { Appointment } from "interfaces/Appointment";
 
 /**
  * Metodo para la creacion de usuarios 
@@ -20,7 +23,7 @@ import { MedicSite } from "interfaces/MedicSite";
  * @returns 
  */
 
-export async function createUser(user: User, address : Adress) {
+export async function createUser(user: User, address : Adress , phone: phoneUser) {
     try {
         //Insertando primero la dirección por las llaves foraneas
         const addressQuery = 'INSERT INTO Adress SET ?';
@@ -42,11 +45,24 @@ export async function createUser(user: User, address : Adress) {
         console.log("Inserted id Adress ", addressId);
         const query = 'INSERT INTO User SET ?';
         const result : any = await connection.query(query, userData);
+        const userId = (result as any).id;
         const token = jwt.sign({_id : result[0].insertId}, process.env.TOKEN_SECRET || '')
         if(!result){
             return { success: false, message: 'User created successfully.', token: token, userCreate : userData };
         }
         console.log('User created successfully.', result);
+
+        //Inserting phone to the correspondig user
+
+        const phoneUserData={
+            idUser : userId,
+            telf: phone.telf,
+            fijo: phone.fijo
+        }
+        const phoneUser : any = addPhoneUser(phoneUserData);
+        if(!phoneUser){
+            console.log("Error in the creation of phone User");
+        }
         
         return { success: true, message: 'User created successfully.', token: token, userCreate : userData };
     } catch (error) {
@@ -174,7 +190,7 @@ export async function getUserPermitions(idRole : number): Promise<Roles | null>{
 
 export async function getUserRolModule(idRole : number): Promise<RolModule[] | null>{
     try {      
-        const query = 'SELECT * FROM RolModule WHERE idRol = ?';
+        const query = 'SELECT * FROM RolModule WHERE idRole = ?';
         const [roleRows] : any = await connection.query(query, [idRole] );
         if(roleRows.length > 0){
             return roleRows as RolModule[];
@@ -197,7 +213,7 @@ export async function getUserLinks(RolModule : RolModule[]): Promise<Module[] | 
     try {
         const arryRolModule: Module[] = [];
         for (let index = 0; index < RolModule.length; index++) {
-            const query = 'SELECT * FROM Module WHERE idModule = ?';
+            const query = 'SELECT * FROM Module WHERE id = ?';
             const [roleRows]: any = await connection.query(query, [RolModule[index].idModule]);
             if (roleRows.length > 0) {
                 arryRolModule.push(roleRows[0] as Module); 
@@ -210,10 +226,15 @@ export async function getUserLinks(RolModule : RolModule[]): Promise<Module[] | 
     }        
 }
 
+/**
+ * Hay que creare el objeto afuera (mas facil)
+ * @param phone Metodo para añadir  phone de los usuarios
+ * @returns 
+ */
 export async function addPhoneUser(phone : phoneUser){
     try {
-        const query = 'INSERT INTO phoneUser SET';
-        const res : any = await connection.query(query, phone);
+        const query = 'INSERT INTO phoneUser SET idUser=?, telf=?, fijo=?';
+        const res : any = await connection.query(query, [phone.idUser, phone.telf, phone.fijo]);
         const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
         if(!res){
             return { success: false, message: 'User phone created problem.', token: token, phneUser :  phone};
@@ -225,10 +246,16 @@ export async function addPhoneUser(phone : phoneUser){
     }        
 }
 
+
+/**
+ * Crear objeto Services afuera
+ * @param service Metodo para crear servicios a medicos
+ * @returns 
+ */
 export async function addService(service : Services){
     try {
-        const query = 'INSERT INTO Services SET';
-        const res : any = await connection.query(query, service);
+        const query = 'INSERT INTO Services SET nameService=?';
+        const res : any = await connection.query(query, service.nameService);
         const token = jwt.sign({_id : res[0].nameService}, process.env.TOKEN_SECRET || '')
         if(!res){
             return { success: false, message: 'Service created problem.', token: token, service :  service};
@@ -240,10 +267,15 @@ export async function addService(service : Services){
     }        
 }
 
+/**
+ * Crear objeto afuera
+ * @param medic Metodo para añadir medicos 
+ * @returns 
+ */
 export async function addMedic(medic : Medic){
     try {
-        const query = 'INSERT INTO Medic SET ';
-        const res : any = await connection.query(query, medic);
+        const query = 'INSERT INTO Medic SET idUser=?, idService=? ';
+        const res : any = await connection.query(query, [medic.idUser, medic.idService]);
         const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
         if(!res){
             return { success: false, message: 'User phone created problem.', token: token, medicU :  medic};
@@ -255,10 +287,15 @@ export async function addMedic(medic : Medic){
     }        
 }
 
+/**
+ * Crear objeto site afuera
+ * @param site Metodo para crear sitios
+ * @returns 
+ */
 export async function addSite(site : Site){
     try {
-        const query = 'INSERT INTO Site SET ';
-        const res : any = await connection.query(query, site);
+        const query = 'INSERT INTO Site SET nameSite=? ';
+        const res : any = await connection.query(query, site.nameSite);
         const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
         if(!res){
             return { success: false, message: 'Site created problem.', token: token, site :  site};
@@ -270,10 +307,15 @@ export async function addSite(site : Site){
     }        
 }
 
+/**
+ * Crear Objeto afuera
+ * @param medicSite Metodo para añador MedicSte
+ * @returns 
+ */
 export async function addMedicSite(medicSite : MedicSite){
     try {
-        const query = 'INSERT INTO MedicSite SET ';
-        const res : any = await connection.query(query, medicSite);
+        const query = 'INSERT INTO MedicSite SET idMedic=?, idSite=? ';
+        const res : any = await connection.query(query, [medicSite.idMedic, medicSite.idSite]);
         const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
         if(!res){
             return { success: false, message: 'MedicSite created problem.', token: token, meidicSit :  medicSite};
@@ -284,5 +326,61 @@ export async function addMedicSite(medicSite : MedicSite){
         throw error;
     }        
 }
+
+export async function addSchedule(schedule : Schedule){
+    try {
+        const query = 'INSERT INTO Schedule SET fecha=?, hora=?';
+        const res : any = await connection.query(query, [schedule.fecha,schedule.hora]);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'schedule created problem.', token: token, schedule :  schedule};
+        }
+        return { success: true, message: 'schedule created successfully.', token: token, schedule :  schedule};
+    } catch (error) {
+        console.error("Creating schedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * Crear objeto afuera
+ * @param medicSchedule Metodo add para schedule del metodo
+ * @returns 
+ */
+export async function MedicSchedule(medicSchedule : MedicSchedule){
+    try {
+        const query = 'INSERT INTO MedicSchedule SET idMedic=?, idSchedule=?, statusMedicSchedule=?, idSite=?';
+        const res : any = await connection.query(query, [medicSchedule.idMedic, medicSchedule.idSchedule, medicSchedule.statusMedicSchedule, medicSchedule.idSite]);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'medicSchedule created problem.', token: token, meidicSit :  medicSchedule};
+        }
+        return { success: true, message: 'medicSchedule created successfully.', token: token, medicSite :  medicSchedule};
+    } catch (error) {
+        console.error("Creating medicSchedule:", error);
+        throw error;
+    }        
+}
+/**
+ * Crear objeto afuera
+ * @param appointment Metodo add para appointment
+ * @returns 
+ */
+export async function addAppointment(appointment : Appointment){
+    try {
+        const query = 'INSERT INTO Appointment SET idUser=?, idScheduleMedic=?,statusAppointment=?, idSite=? ';
+        const res : any = await connection.query(query, [appointment.idUser,appointment.idScheduleMedic,appointment.statusAppointment,appointment.idSite]);
+        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
+        if(!res){
+            return { success: false, message: 'appointment created problem.', token: token, appointment :  appointment};
+        }
+        return { success: true, message: 'appointment created successfully.', token: token, appointment :  appointment};
+    } catch (error) {
+        console.error("Creating appointment:", error);
+        throw error;
+    }        
+}
+
+
 
 

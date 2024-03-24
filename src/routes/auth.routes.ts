@@ -6,6 +6,7 @@ const router : Router = Router();
 router
     .post('/signup', signup )
     .post('/signin', signin )
+    //.post('/addPhone', addPhone)
     .get('/profile', TokenValidator ,profile );
 
 export default router;
