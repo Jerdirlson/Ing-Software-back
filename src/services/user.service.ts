@@ -326,7 +326,6 @@ export async function addMedicSite(medicSite : MedicSite){
         throw error;
     }        
 }
-
 export async function addSchedule(schedule : Schedule){
     try {
         const query = 'INSERT INTO Schedule SET fecha=?, hora=?';
@@ -347,7 +346,7 @@ export async function addSchedule(schedule : Schedule){
  * @param medicSchedule Metodo add para schedule del metodo
  * @returns 
  */
-export async function MedicSchedule(medicSchedule : MedicSchedule){
+export async function addMedicSchedule(medicSchedule : MedicSchedule){
     try {
         const query = 'INSERT INTO MedicSchedule SET idMedic=?, idSchedule=?, statusMedicSchedule=?, idSite=?';
         const res : any = await connection.query(query, [medicSchedule.idMedic, medicSchedule.idSchedule, medicSchedule.statusMedicSchedule, medicSchedule.idSite]);
@@ -380,6 +379,410 @@ export async function addAppointment(appointment : Appointment){
         throw error;
     }        
 }
+
+/**
+ * 
+ * @param idSchedule Select Schedule by id
+ * @returns 
+ */
+export async function getSchedule(idSchedule : number): Promise<Schedule | null>{
+    try {
+        const query = 'SELECT fecha, hora FROM Schedule WHERE id=?';
+        const [res] : any = await connection.query(query, idSchedule);
+        
+        if(res.length > 0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("Creating schedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idSchedule Select Schedule by fecha
+ * @returns 
+ */
+export async function getScheduleByDate(fecha : Date): Promise<Schedule | null>{
+    try {
+        const query = 'SELECT id, hora FROM Schedule WHERE fecha=?';
+        const [res] : any = await connection.query(query, fecha);
+        
+        if(res.length > 0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("Date select schedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idMedicSchedule Metodo select por id MedicSchedule
+ * @returns 
+ */
+export async function getMedicSchedule(idMedicSchedule : number): Promise<MedicSchedule | null>{
+    try {
+        const query = 'SELECT idMedic, idSchedule, statusMedicSchedule, idSite MedicSchedule WHERE id=?';
+        const [res] : any = await connection.query(query, idMedicSchedule);
+        if(res.length > 0){
+            return res;
+        }
+        return res
+    } catch (error) {
+        console.error("select medicSchedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idMedic Metodo select por id Medic
+ * @returns 
+ */
+export async function getMedicScheduleByidMedic(idMedic : number): Promise<MedicSchedule | null>{
+    try {
+        const query = 'SELECT id, idSchedule, statusMedicSchedule, idSite MedicSchedule WHERE idMedic=?';
+        const [res] : any = await connection.query(query, idMedic);
+        if(res.length > 0){
+            return res;
+        }
+        return res
+    } catch (error) {
+        console.error("Select by idMedic medicSchedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idSite Metodo select por idSite
+ * @returns 
+ */
+export async function getMedicScheduleByidSite(idSite : number): Promise<MedicSchedule | null>{
+    try {
+        const query = 'SELECT id,idMedic ,idSchedule, statusMedicSchedule  MedicSchedule WHERE idSite=?';
+        const [res] : any = await connection.query(query, idSite);
+        if(res.length > 0){
+            return res;
+        }
+        return res
+    } catch (error) {
+        console.error("Select by idSite medicSchedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idSite Metodo select por status
+ * @returns 
+ */
+export async function getMedicScheduleStatus(status : boolean): Promise<MedicSchedule | null>{
+    try {
+        const query = 'SELECT id,idMedic ,idSchedule, idSite  MedicSchedule WHERE statusMedicSchedule=?';
+        const [res] : any = await connection.query(query, status);
+        if(res.length > 0){
+            return res;
+        }
+        return res
+    } catch (error) {
+        console.error("Select by status medicSchedule:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idAppo Metodo select appointment by id
+ * @returns 
+ */
+export async function getAppointment(idAppo : number): Promise<Appointment | null >{
+    try {
+        const query = 'SELECT idUser, idScheduleMedic,statusAppointment, idSite FROM Appointment id=? ';
+        const [res] : any = await connection.query(query, idAppo);
+        if(res.length > 0){
+            return res
+        }
+        return res;
+    } catch (error) {
+        console.error("Select id appointment:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idUser Metodo select appointment by idUser
+ * @returns 
+ */
+export async function getAppointmentByidUser(idUser : number): Promise<Appointment | null >{
+    try {
+        const query = 'SELECT id, idScheduleMedic,statusAppointment, idSite FROM Appointment idUser=? ';
+        const [res] : any = await connection.query(query, idUser);
+        if(res.length > 0){
+            return res
+        }
+        return res;
+    } catch (error) {
+        console.error("Select idUser appointment:", error);
+        throw error;
+    }        
+}
+/**
+ * 
+ * @param idScheduleMedic Metodo select appointment by idScheduleMedic
+ * @returns 
+ */
+export async function getAppointmentByidScheduleMedic(idScheduleMedic : number): Promise<Appointment | null >{
+    try {
+        const query = 'SELECT id, idUser,statusAppointment, idSite FROM Appointment idScheduleMedic=? ';
+        const [res] : any = await connection.query(query, idScheduleMedic);
+        if(res.length > 0){
+            return res
+        }
+        return res;
+    } catch (error) {
+        console.error("Select idScheduleMedic appointment:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param status Metodo select appointment by status
+ * @returns 
+ */
+export async function getAppointmentByStatus(status : boolean): Promise<Appointment | null >{
+    try {
+        const query = 'SELECT id, idUser, idScheduleMedic, idSite FROM Appointment statusAppointment=? ';
+        const [res] : any = await connection.query(query, status);
+        if(res.length > 0){
+            return res
+        }
+        return res;
+    } catch (error) {
+        console.error("Select status appointment:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idSite Metodo select appointment by idSite
+ * @returns 
+ */
+export async function getAppointmentByidSite(idSite : number): Promise<Appointment | null >{
+    try {
+        const query = 'SELECT id, idUser, idScheduleMedic, statusAppointment FROM Appointment idSite=? ';
+        const [res] : any = await connection.query(query, idSite);
+        if(res.length > 0){
+            return res
+        }
+        return res;
+    } catch (error) {
+        console.error("Select idSite appointment:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idUser Metodo select de phone user by id user
+ * @returns 
+ */
+export async function getPhoneUser(idUser : number): Promise<phoneUser[] | null> {
+    try {
+        const query = 'SELECT id, telf, fijo FROM phoneUser WHERE idUser=?';
+        const [res] : any = await connection.query(query,idUser );
+        if(res.length >0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("setect phone user by idUser:", error);
+        throw error;
+    }        
+}
+
+
+/**
+ * 
+ * @param idService Metodo select get by idService
+ * @returns 
+ */
+export async function getService(idService : number):Promise<Services | null>{
+    try {
+        const query = 'SELECT nameService FROM  Services WHERE id=?';
+        const [res] : any = await connection.query(query, idService);
+        if(res.length > 0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("Select service by id", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idUser Metodo select by idUSer 
+ * @returns 
+ */
+export async function getMedicByidUser(idUser : number): Promise<Medic | null>{
+    try {
+        const query = 'SELECT idService FROM Medic WHERE idUser=? ';
+        const [res] : any = await connection.query(query, idUser);
+        if(res.length > 0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("SelectMedic by id User:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idService Metodo select by idService 
+ * @returns 
+ */
+export async function getMedicByidService(idService : number): Promise<Medic | null>{
+    try {
+        const query = 'SELECT idUser FROM Medic WHERE idService=? ';
+        const [res] : any = await connection.query(query, idService);
+        if(res.length > 0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("Setect medic by idService:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idMedic Metodo setect by id del medic
+ * @returns 
+ */
+export async function getMedicByidMedic(idMedic : number): Promise<Medic | null>{
+    try {
+        const query = 'SELECT idUser, idService FROM Medic WHERE id=? ';
+        const [res] : any = await connection.query(query, idMedic);
+        if(res.length > 0){
+            return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("Select medic  by id:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idsite Metodo select para sites by id
+ * @returns 
+ */
+export async function getSite(idsite : number):Promise<Site | null>{
+    try {
+        const query = 'SELECT nameSite FROM Site WHERE id=? ';
+        const res : any = await connection.query(query, idsite);
+        if(res.length > 0){
+           return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("select site Site by id:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param sitnameSite Metodo select para sites by name
+ * @returns 
+ */
+export async function getSiteByName(sitnameSite : string):Promise<Site | null>{
+    try {
+        const query = 'SELECT id FROM Site WHERE nameSite=? ';
+        const res : any = await connection.query(query, sitnameSite);
+        if(res.length > 0){
+           return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("select Site by name:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idMedicSite Metodo select medic site by id
+ * @returns 
+ */
+export async function getMedicSite(idMedicSite : number):Promise<MedicSite | null>{
+    try {
+        const query = 'SELECT idMedic, idSite FROM MedicSite WHERE id=? ';
+        const res : any = await connection.query(query,idMedicSite);
+        if(res.length > 0){
+           return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("select by id MedicSite:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idMedic Metodo select medic site by id
+ * @returns 
+ */
+export async function getMedicSiteByidMedic(idMedic : number):Promise<MedicSite | null>{
+    try {
+        const query = 'SELECT id, idSite FROM MedicSite WHERE idMedic=? ';
+        const res : any = await connection.query(query,idMedic);
+        if(res.length > 0){
+           return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("select by idMedic MedicSite:", error);
+        throw error;
+    }        
+}
+
+/**
+ * 
+ * @param idSite Metodo select  site by idSite
+ * @returns 
+ */
+export async function getMedicSiteByidSite(idSite : number):Promise<MedicSite | null>{
+    try {
+        const query = 'SELECT id, idMedic FROM MedicSite WHERE idSite=? ';
+        const res : any = await connection.query(query,idSite);
+        if(res.length > 0){
+           return res;
+        }
+        return res;
+    } catch (error) {
+        console.error("select by idSite MedicSite:", error);
+        throw error;
+    }        
+}
+
+
+
 
 
 
