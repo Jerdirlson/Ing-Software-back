@@ -7,7 +7,7 @@ import bcrypt from 'bcryptjs';
 import { Roles } from "interfaces/Roles";
 import { RolModule } from "interfaces/RolModule";
 import { Module } from "interfaces/Module";
-import { phoneUser } from "interfaces/phoneUser";
+import { PhoneUser } from "interfaces/phoneUser";
 import {Medic} from "interfaces/Medic";
 import {Services} from "interfaces/Services";
 import { Site } from "interfaces/Site";
@@ -23,7 +23,7 @@ import { Appointment } from "interfaces/Appointment";
  * @returns 
  */
 
-export async function createUser(user: User, address : Adress , phone: phoneUser) {
+export async function createUser(user: User, address : Adress , phone: PhoneUser) {
     try {
         //Insertando primero la dirección por las llaves foraneas
         const addressQuery = 'INSERT INTO Adress SET ?';
@@ -231,7 +231,7 @@ export async function getUserLinks(RolModule : RolModule[]): Promise<Module[] | 
  * @param phone Metodo para añadir  phone de los usuarios
  * @returns 
  */
-export async function addPhoneUser(phone : phoneUser){
+export async function addPhoneUser(phone : PhoneUser){
     try {
         const query = 'INSERT INTO phoneUser SET idUser=?, telf=?, fijo=?';
         const res : any = await connection.query(query, [phone.idUser, phone.telf, phone.fijo]);
@@ -595,7 +595,7 @@ export async function getAppointmentByidSite(idSite : number): Promise<Appointme
  * @param idUser Metodo select de phone user by id user
  * @returns 
  */
-export async function getPhoneUser(idUser : number): Promise<phoneUser[] | null> {
+export async function getPhoneUser(idUser : number): Promise<PhoneUser[] | null> {
     try {
         const query = 'SELECT id, telf, fijo FROM phoneUser WHERE idUser=?';
         const [res] : any = await connection.query(query,idUser );

@@ -1,4 +1,4 @@
-export interface phoneUser {
+export interface PhoneUser {
     id?: number,
     idUser : number,
     telf: string,
