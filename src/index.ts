@@ -7,7 +7,10 @@ dotenv.config({ path: path.join(__dirname, '../environment/.env') });
 import routes from './routes/routes';
 import userRouter from './routes/user.routes';
 import authRouter from './routes/auth.routes';
-
+import scheduleRouter from './routes/schedule.routes';
+import medicRouter from './routes/medic.routes';
+import servicesRouter from './routes/service.routes';
+import appointmentRouter from './routes/appointments.routes';
 
 const app = express();
 const port = 3000;
@@ -32,6 +35,10 @@ app.use(express.json());
 app.use('/api', routes);
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/schedule', scheduleRouter);
+app.use('/api/medic',medicRouter)
+app.use('/api/services',servicesRouter)
+app.use('/api/appointments', appointmentRouter)
 
 
 app.listen(port, () => {

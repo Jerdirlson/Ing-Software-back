@@ -326,15 +326,14 @@ export async function addMedicSite(medicSite : MedicSite){
         throw error;
     }        
 }
-export async function addSchedule(schedule : Schedule){
+export async function addScheduleService(schedule : Schedule){
     try {
         const query = 'INSERT INTO Schedule SET fecha=?, hora=?';
         const res : any = await connection.query(query, [schedule.fecha,schedule.hora]);
-        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
         if(!res){
-            return { success: false, message: 'schedule created problem.', token: token, schedule :  schedule};
+            return { success: false, message: 'schedule created problem.', schedule :  schedule};
         }
-        return { success: true, message: 'schedule created successfully.', token: token, schedule :  schedule};
+        return { success: true, message: 'schedule created successfully.', schedule :  schedule};
     } catch (error) {
         console.error("Creating schedule:", error);
         throw error;
@@ -352,9 +351,9 @@ export async function addMedicSchedule(medicSchedule : MedicSchedule){
         const res : any = await connection.query(query, [medicSchedule.idMedic, medicSchedule.idSchedule, medicSchedule.statusMedicSchedule, medicSchedule.idSite]);
         const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
         if(!res){
-            return { success: false, message: 'medicSchedule created problem.', token: token, meidicSit :  medicSchedule};
+            return { success: false, message: 'medicSchedule created problem.', token: token, meidicSchedule:  medicSchedule};
         }
-        return { success: true, message: 'medicSchedule created successfully.', token: token, medicSite :  medicSchedule};
+        return { success: true, message: 'medicSchedule created successfully.', token: token, meidicSchedule :  medicSchedule};
     } catch (error) {
         console.error("Creating medicSchedule:", error);
         throw error;
