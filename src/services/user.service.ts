@@ -11,7 +11,6 @@ import { PhoneUser } from "interfaces/phoneUser";
 import {Medic} from "interfaces/Medic";
 import {Services} from "interfaces/Services";
 import { Site } from "interfaces/Site";
-import { MedicSite } from "interfaces/MedicSite";
 import { Schedule } from "interfaces/Schedule";
 import { MedicSchedule } from "interfaces/MedicSchedule";
 import { Appointment } from "interfaces/Appointment";
@@ -247,25 +246,6 @@ export async function addPhoneUser(phone : PhoneUser){
 }
 
 
-/**
- * Crear objeto Services afuera
- * @param service Metodo para crear servicios a medicos
- * @returns 
- */
-export async function addService(service : Services){
-    try {
-        const query = 'INSERT INTO Services SET nameService=?';
-        const res : any = await connection.query(query, service.nameService);
-        const token = jwt.sign({_id : res[0].nameService}, process.env.TOKEN_SECRET || '')
-        if(!res){
-            return { success: false, message: 'Service created problem.', token: token, service :  service};
-        }
-        return { success: true, message: 'Service created succesfully.', token: token, service :  service};
-    } catch (error) {
-        console.error("Creating service:", error);
-        throw error;
-    }        
-}
 
 /**
  * Crear objeto afuera
@@ -307,25 +287,7 @@ export async function addSite(site : Site){
     }        
 }
 
-/**
- * Crear Objeto afuera
- * @param medicSite Metodo para añador MedicSte
- * @returns 
- */
-export async function addMedicSite(medicSite : MedicSite){
-    try {
-        const query = 'INSERT INTO MedicSite SET idMedic=?, idSite=? ';
-        const res : any = await connection.query(query, [medicSite.idMedic, medicSite.idSite]);
-        const token = jwt.sign({_id : res[0].idUser}, process.env.TOKEN_SECRET || '')
-        if(!res){
-            return { success: false, message: 'MedicSite created problem.', token: token, meidicSit :  medicSite};
-        }
-        return { success: true, message: 'MedicSite created successfully.', token: token, medicSite :  medicSite};
-    } catch (error) {
-        console.error("Creating MedicSite:", error);
-        throw error;
-    }        
-}
+
 export async function addScheduleService(schedule : Schedule){
     try {
         const query = 'INSERT INTO Schedule SET fecha=?, hora=?';
@@ -723,62 +685,7 @@ export async function getSiteByName(sitnameSite : string):Promise<Site | null>{
     }        
 }
 
-/**
- * 
- * @param idMedicSite Metodo select medic site by id
- * @returns 
- */
-export async function getMedicSite(idMedicSite : number):Promise<MedicSite | null>{
-    try {
-        const query = 'SELECT idMedic, idSite FROM MedicSite WHERE id=? ';
-        const res : any = await connection.query(query,idMedicSite);
-        if(res.length > 0){
-           return res;
-        }
-        return res;
-    } catch (error) {
-        console.error("select by id MedicSite:", error);
-        throw error;
-    }        
-}
 
-/**
- * 
- * @param idMedic Metodo select medic site by id
- * @returns 
- */
-export async function getMedicSiteByidMedic(idMedic : number):Promise<MedicSite | null>{
-    try {
-        const query = 'SELECT id, idSite FROM MedicSite WHERE idMedic=? ';
-        const res : any = await connection.query(query,idMedic);
-        if(res.length > 0){
-           return res;
-        }
-        return res;
-    } catch (error) {
-        console.error("select by idMedic MedicSite:", error);
-        throw error;
-    }        
-}
-
-/**
- * 
- * @param idSite Metodo select  site by idSite
- * @returns 
- */
-export async function getMedicSiteByidSite(idSite : number):Promise<MedicSite | null>{
-    try {
-        const query = 'SELECT id, idMedic FROM MedicSite WHERE idSite=? ';
-        const res : any = await connection.query(query,idSite);
-        if(res.length > 0){
-           return res;
-        }
-        return res;
-    } catch (error) {
-        console.error("select by idSite MedicSite:", error);
-        throw error;
-    }        
-}
 
 
 

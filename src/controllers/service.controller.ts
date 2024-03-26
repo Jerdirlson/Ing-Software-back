@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { addMedic, addScheduleService, addService } from "../services/user.service";
-
+import { addService } from "../services/services.service";
 
 /**
  * 

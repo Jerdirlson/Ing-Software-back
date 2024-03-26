@@ -1,4 +1,5 @@
 export interface Services {
     id?: number,
-    nameService : string
+    nameService : string, 
+    descriptionService ?: string
     }
