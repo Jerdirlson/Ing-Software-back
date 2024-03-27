@@ -160,6 +160,27 @@ export async function getUserById(id : number): Promise<User | null>{
 }
 
 /**
+ * Metodo select para obtener el usuario por el idUser
+ * @param id
+ * @returns 
+ */
+
+export async function getUserByNumId(id : number): Promise<User | null>{
+    try {
+        const query = 'SELECT * FROM User WHERE numId = ?';
+        const [rows] : any = await connection.query(query, [id]);        
+        if (rows.length > 0) {
+            return rows[0] as User;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error("Error retrieving user:", error);
+        throw error;
+    }
+}
+
+/**
  * Metodo select para obtener de la tabla role (el rol el cual el usuario tiene)
  * @param idRole 
  * @returns 
