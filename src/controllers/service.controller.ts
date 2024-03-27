@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addService } from "../services/service.services";
+import { addService } from "../services/services.service";
 
 /**
  * 
