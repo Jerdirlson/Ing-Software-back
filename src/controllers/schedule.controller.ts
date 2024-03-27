@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addScheduleService } from "../services/user.service";
+import { addScheduleService } from "../services/schedule.services";
 
 
 /**

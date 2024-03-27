@@ -16,25 +16,7 @@ import { MedicSchedule } from "interfaces/MedicSchedule";
 import { Appointment } from "interfaces/Appointment";
 
 
-/**
- * Crear objeto Services afuera
- * @param service Metodo para crear servicios a medicos
- * @returns 
- */
-export async function addService(service : Services){
-    try {
-        const query = 'INSERT INTO Services SET nameService=?';
-        const res : any = await connection.query(query, service.nameService);
-        const token = jwt.sign({_id : res[0].nameService}, process.env.TOKEN_SECRET || '')
-        if(!res){
-            return { success: false, message: 'Service created problem.', token: token, service :  service};
-        }
-        return { success: true, message: 'Service created succesfully.', token: token, service :  service};
-    } catch (error) {
-        console.error("Creating service:", error);
-        throw error;
-    }        
-}
+
 
 /**
  * Crear objeto Services afuera
