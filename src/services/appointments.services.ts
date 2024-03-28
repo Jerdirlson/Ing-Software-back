@@ -40,7 +40,7 @@ export async function addAppointment(appointment : Appointment){
  * @param idAppo Metodo select appointment by id
  * @returns 
  */
-export async function getAppointment(idAppo : number): Promise<Appointment | null >{
+export async function getAppointmentbyId(idAppo : number): Promise<Appointment | null >{
     try {
         const query = 'SELECT idUser, idScheduleMedic,statusAppointment, idSite FROM Appointment id=? ';
         const [res] : any = await connection.query(query, idAppo);
@@ -125,6 +125,26 @@ export async function getAppointmentByidSite(idSite : number): Promise<Appointme
         return res;
     } catch (error) {
         console.error("Select idSite appointment:", error);
+        throw error;
+    }        
+}
+
+
+/**
+ * 
+ * @param idSite Metodo select appointment by idSite
+ * @returns 
+ */
+export async function updateAppointment(appoinment : Appointment): Promise<Appointment | null >{
+    try {
+        const query = 'Update Appointment Set idScheduleMedic =? where id=0 AND idUser=? ';
+        const [res] : any = await connection.query(query, [appoinment.idScheduleMedic, appoinment.idUser]);
+        if(res.length > 0){
+            return res
+        }
+        return res;
+    } catch (error) {
+        console.error("Update idSite appointment:", error);
         throw error;
     }        
 }
