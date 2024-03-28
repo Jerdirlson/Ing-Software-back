@@ -55,7 +55,7 @@ export async function getSchedule(idSchedule : number): Promise<Schedule | null>
  * @param idSchedule Select Schedule by fecha
  * @returns 
  */
-export async function getScheduleByDate(fecha : Date): Promise<Schedule | null>{
+export async function getScheduleByDate(fecha : Date): Promise<Schedule[] | null>{
     try {
         const query = 'SELECT id, hora FROM Schedule WHERE fecha=?';
         const [res] : any = await connection.query(query, fecha);

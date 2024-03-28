@@ -63,7 +63,7 @@ export const signin = async (req : Request, res : Response) => {
 };
 
 export const profile = async (req : Request, res : Response) => {
-    const user: User | null = await getUserById(req.userId);
+    const user: User | null = await getUserById(req.body.id);
 
     if (!user) return res.status(404).json('No se encontro al usuario.')
     

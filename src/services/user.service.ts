@@ -146,7 +146,7 @@ export async function getUserByEmail(email : string): Promise<User | null>{
 
 export async function getUserById(id : number): Promise<User | null>{
     try {
-        const query = 'SELECT * FROM User WHERE idUser = ?';
+        const query = 'SELECT * FROM User WHERE id = ?';
         const [rows] : any = await connection.query(query, [id]);        
         if (rows.length > 0) {
             return rows[0] as User;

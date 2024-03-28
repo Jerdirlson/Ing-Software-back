@@ -59,7 +59,7 @@ export async function addServiceWithDescrip(service : Services){
 
 /**
  * Crear objeto Services afuera
- * @param service Metodo para crear servicios a medicos
+ * @param service Metodo para get servicios con descripcion a medicos
  * @returns 
  */
 export async function getServiceWithDescrip(): Promise<Services[] | null>{
