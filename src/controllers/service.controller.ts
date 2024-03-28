@@ -134,7 +134,7 @@ export const getServiceId = async(req : Request, res : Response) =>{
  * @param req 
  * @param res 
  */
-export const getService = async(req : Request, res : Response) =>{
+export const getServiceByName = async(req : Request, res : Response) =>{
     const nameService = req.body.nameService;
     const serviceData = {
         nameService: nameService
